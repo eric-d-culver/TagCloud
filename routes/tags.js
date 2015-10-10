@@ -5,10 +5,10 @@ var router = express.Router();
 
 /* POST tag page. */
 router.post('/', function(req, res, next) {
-  Clarifai.tagURL(req.body.url, 'image13', function (err, response) { commonResultHandler(err, response, res, next); });
+  Clarifai.tagURL(req.body.url, 'image13', function (err, response) { commonResultHandler(err, response, req, res, next); });
 });
 
-function commonResultHandler( err, response, res, next ) {
+function commonResultHandler( err, response, req, res, next ) {
 	if( err != null ) {
 		if( typeof err["status_code"] === "string" && err["status_code"] === "TIMEOUT") {
 			console.log("TAG request timed out");
@@ -35,7 +35,7 @@ function commonResultHandler( err, response, res, next ) {
 					' local_id='+response.results[0].local_id +
 					' tags='+response["results"][0].result["tag"]["classes"] )
 					var tagList = zip(response["results"][0].result["tag"]["classes"], response["results"][0].result["tag"]["probs"], 'tag', 'prob');
-					res.render('tags', {title: 'TagCloud', tags: tagList});
+					res.render('tags', {title: 'TagCloud', tags: tagList, image: req.body.url });
 			}
 			else {
 				console.log( 'docid='+response.results[i].docid +
