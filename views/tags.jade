@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1= Tags
-  img(href=image)
+  h1 Tags
+  img(src=image, alt='Your Image')
   for tag in tags
     div(id=tag['tag'], class='tag', prob=tag['prob'])=tag['tag']
